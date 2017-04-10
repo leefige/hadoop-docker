@@ -1,10 +1,5 @@
-FROM debian:8
+FROM openjdk:8
 MAINTAINER Ivan Ermilov <ivan.s.ermilov@gmail.com>
-
-RUN echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
-
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends openjdk-8-jdk
-ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends net-tools curl
 
@@ -40,11 +35,12 @@ RUN gpg --keyserver pool.sks-keyservers.net --recv-keys \
     0445B7BFC4515847C157ECD16BA72FF1C99785DE \
     B74F188889D159F3D7E64A7F348C6D7A0DCED714 \
     4A6AC5C675B6155682729C9E08D51A0A7501105C \
-    8B44A05C308955D191956559A5CEE20A90348D47 
+    8B44A05C308955D191956559A5CEE20A90348D47 \
+    D33D195C
 
 RUN gpg --keyserver pool.sks-keyservers.net --recv-key C36C5F0F
 
-ENV HADOOP_VERSION 2.7.1
+ENV HADOOP_VERSION 2.8.0
 ENV HADOOP_URL https://www.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz
 RUN set -x \
     && curl -fSL "$HADOOP_URL" -o /tmp/hadoop.tar.gz \
