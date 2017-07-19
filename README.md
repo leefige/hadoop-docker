@@ -6,6 +6,7 @@ Version 1.1.0 introduces healthchecks for the containers.
 
 To deploy an example HDFS cluster, run:
 ```
+  docker network create hadoop
   docker-compose up
 ```
 
@@ -29,12 +30,20 @@ The available configurations are:
 * /etc/hadoop/yarn-site.xml YARN_CONF
 * /etc/hadoop/httpfs-site.xml HTTPFS_CONF
 * /etc/hadoop/kms-site.xml KMS_CONF
+* /etc/hadoop/mapred-site.xml MAPRED_CONF
 
 If you need to extend some other configuration file, refer to base/entrypoint.sh bash script.
 
 After starting the example Hadoop cluster, you should be able to access interfaces of all the components (substitute domain names by IP addresses from ```network inspect hadoop``` command):
-* Namenode: http://namenode:50070/dfshealth.html#tab-overview
-* History server: http://historyserver:8188/applicationhistory
-* Datanode: http://datanode:50075/
-* Nodemanager: http://nodemanager:8042/node
-* Resource manager: http://resourcemanager:8088/
+* Namenode: http://localhost:50070/dfshealth.html#tab-overview
+* History server: http://localhost:8188/applicationhistory
+* Datanode: http://localhost:50075/
+* Nodemanager: http://localhost:8042/node
+* Resource manager: http://localhost:8088/
+
+# Running example MapReduce job
+To run example map reduce job on the Hadoop cluster run:
+```
+make
+```
+See Makefile and [submit docker image](./submit/Dockerfile) for more details.
