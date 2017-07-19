@@ -1,9 +1,16 @@
 version: "2"
 
 services:
+
+  #######
+  # DFS #
+  #######
+
   namenode:
     build: ./namenode
     container_name: namenode
+    networks:
+      - hadoop
     volumes:
       - ./data/namenode:/hadoop/dfs/name
     environment:
@@ -11,42 +18,11 @@ services:
     env_file:
       - ./hadoop.env
 
-  resourcemanager:
-    build: ./resourcemanager
-    container_name: resourcemanager
-    depends_on:
-      - "namenode"
-    ports:
-      - "58088:8088"
-    env_file:
-      - ./hadoop.env
-
-  historyserver:
-    build: ./historyserver
-    container_name: historyserver
-    volumes:
-      - ./data/historyserver:/hadoop/yarn/timeline
-    depends_on:
-      - "namenode"
-    ports:
-      - "58188:8188"
-    env_file:
-      - ./hadoop.env
-
-  nodemanager1:
-    build: ./nodemanager
-    container_name: nodemanager1
-    depends_on:
-      - "namenode"
-      - "resourcemanager"
-    ports:
-      - "58042:8042"
-    env_file:
-      - ./hadoop.env
-
   datanode1:
     build: ./datanode
     container_name: datanode1
+    networks:
+      - hadoop
     depends_on:
       - "namenode"
     volumes:
@@ -54,12 +30,51 @@ services:
     env_file:
       - ./hadoop.env
 
-  datanode2:
-    build: ./datanode
-    container_name: datanode2
+  ########
+  # YARN #
+  ########
+
+  resourcemanager:
+    build: ./resourcemanager
+    container_name: resourcemanager
+    networks:
+      - hadoop
     depends_on:
       - "namenode"
-    volumes:
-      - ./data/datanode2:/hadoop/dfs/data
+    ports:
+      - "8088:8088"
     env_file:
       - ./hadoop.env
+
+  nodemanager1:
+    build: ./nodemanager
+    container_name: nodemanager1
+    networks:
+      - hadoop
+    depends_on:
+      - "namenode"
+      - "resourcemanager"
+    ports:
+      - "8042:8042"
+    env_file:
+      - ./hadoop.env
+
+  historyserver:
+    build: ./historyserver
+    container_name: historyserver
+    networks:
+      - hadoop
+    volumes:
+      - ./data/historyserver:/hadoop/yarn/timeline
+    depends_on:
+      - "namenode"
+    ports:
+      - "8188:8188"
+    env_file:
+      - ./hadoop.env
+
+
+
+networks:
+  hadoop:
+    external: true
