@@ -44,6 +44,6 @@ After starting the example Hadoop cluster, you should be able to access interfac
 # Running example MapReduce job
 To run example map reduce job on the Hadoop cluster run:
 ```
-make
+make wordcount
 ```
 See Makefile and [submit docker image](./submit/Dockerfile) for more details.
