@@ -62,6 +62,9 @@ ENV MULTIHOMED_NETWORK=1
 ENV USER=root
 ENV PATH $HADOOP_PREFIX/bin/:$PATH
 
+RUN apt-get update && apt-get install -y libsnappy-dev
+RUN ln -s /usr/lib/x86_64-linux-gnu/libsnappy.so /opt/hadoop-$HADOOP_VERSION/lib/native
+
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod a+x /entrypoint.sh
 
