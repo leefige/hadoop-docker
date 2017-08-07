@@ -1,6 +1,14 @@
 FROM openjdk:8
 MAINTAINER Ivan Ermilov <ivan.s.ermilov@gmail.com>
 
+ENV ENABLE_INIT_DAEMON true
+ENV INIT_DAEMON_BASE_URI http://identifier/init-daemon
+ENV INIT_DAEMON_STEP hadoop_init
+
+COPY wait-for-step.sh /
+COPY execute-step.sh /
+COPY finish-step.sh /
+
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends net-tools curl
 
 RUN gpg --keyserver pool.sks-keyservers.net --recv-keys \
@@ -48,7 +56,7 @@ RUN set -x \
     && gpg --verify /tmp/hadoop.tar.gz.asc \
     && tar -xvf /tmp/hadoop.tar.gz -C /opt/ \
     && rm /tmp/hadoop.tar.gz*
-    
+
 RUN ln -s /opt/hadoop-$HADOOP_VERSION/etc/hadoop /etc/hadoop
 RUN cp /etc/hadoop/mapred-site.xml.template /etc/hadoop/mapred-site.xml
 RUN mkdir /opt/hadoop-$HADOOP_VERSION/logs
