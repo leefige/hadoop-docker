@@ -20,7 +20,7 @@ The Maven `package` command must create an assembly JAR (or 'uber' JAR) containi
 4. Build and run the image
 ```
 docker build --rm=true -t bde/mapreduce-app .
-docker run --name my-mapreduce-app --net hadoop -d bde/mapreduce-app
+docker run --name my-mapreduce-app --net hadoop -e ENABLE_INIT_DAEMON=false -d bde/mapreduce-app
 ```
 
 The sources in the project folder will be automatically added to `/opt/hadoop/applications` if you directly extend the Hadoop Maven template image. Otherwise you will have to add and package the sources by yourself in your Dockerfile with the commands:
