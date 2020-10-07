@@ -11,10 +11,10 @@ build:
 run:
 	docker-compose up -d
 
-stop:
+stop-keep-volumes:
 	docker-compose down
 
-stop-volumes:
+stop:
 	docker-compose down --volumes
 
 clean:
