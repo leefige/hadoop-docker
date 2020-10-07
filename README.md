@@ -1,3 +1,23 @@
+# Hadoop Docker (Ubuntu 20.04)
+
+Based on [big-data-europe/docker-hadoop](https://github.com/big-data-europe/docker-hadoop), but built on Ubuntu 20.04.
+Using [TUNA](https://mirrors.tuna.tsinghua.edu.cn/) sources for higher speed in east Asia.
+
+Base image can be found at [leefige/hadoop-base](https://hub.docker.com/repository/docker/leefige/hadoop-base).
+
+## Usage
+
+```sh
+$ make build
+$ make run
+$ make stop
+$ make clean
+```
+
+---
+
+# * Original Readme *
+
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/big-data-europe/Lobby)
 
 # Changes
