@@ -3,50 +3,68 @@ version: "3.8"
 services:
   namenode:
     image: hadoop-namenode
-    container_name: namenode
+    container_name: hadoop-namenode
     restart: always
     ports:
-      - 9870:9870
-      - 9000:9000
+      - 9870:9870 # WebHDFS
+      - 9000:9000 # IPC
     volumes:
       - hadoop_namenode:/hadoop/dfs/name
     environment:
       - CLUSTER_NAME=ddbs
     env_file:
       - ./hadoop.env
+    networks:
+      default:
+        aliases:
+          - hd-name
 
   datanode:
     image: hadoop-datanode
-    container_name: datanode
+    container_name: hadoop-datanode
     restart: always
+    ports:
+      - 9864:9864 # WebHDFS
     volumes:
       - hadoop_datanode:/hadoop/dfs/data
     environment:
       SERVICE_PRECONDITION: "namenode:9870"
     env_file:
       - ./hadoop.env
+    networks:
+      default:
+        aliases:
+          - hd-data
 
   resourcemanager:
     image: hadoop-resourcemanager
-    container_name: resourcemanager
+    container_name: hadoop-resourcemanager
     restart: always
     environment:
       SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864"
     env_file:
       - ./hadoop.env
+    networks:
+      default:
+        aliases:
+          - hd-resource
 
-  nodemanager1:
+  nodemanager:
     image: hadoop-nodemanager
-    container_name: nodemanager
+    container_name: hadoop-nodemanager
     restart: always
     environment:
       SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
     env_file:
       - ./hadoop.env
+    networks:
+      default:
+        aliases:
+          - hd-nodemanager
 
   historyserver:
     image: hadoop-historyserver
-    container_name: historyserver
+    container_name: hadoop-historyserver
     restart: always
     environment:
       SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
@@ -54,6 +72,10 @@ services:
       - hadoop_historyserver:/hadoop/yarn/timeline
     env_file:
       - ./hadoop.env
+    networks:
+      default:
+        aliases:
+          - hd-history
 
 volumes:
   hadoop_namenode:
