@@ -1,4 +1,3 @@
-DOCKER_NETWORK = docker-hadoop_default
 ENV_FILE = hadoop.env
 
 build:
