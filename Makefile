@@ -10,11 +10,8 @@ build:
 run:
 	docker-compose up -d
 
-stop-keep-volumes:
-	docker-compose down
-
 stop:
-	docker-compose down --volumes
+	docker-compose down
 
 clean:
 	docker image rm hadoop-namenode hadoop-datanode hadoop-resourcemanager \
