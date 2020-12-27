@@ -9,7 +9,7 @@ services:
       - 9870:9870 # WebHDFS
       - 9000:9000 # IPC
     volumes:
-      - hadoop_namenode-50g:/hadoop/dfs/name
+      - hadoop_namenode-10g:/hadoop/dfs/name
     environment:
       - CLUSTER_NAME=ddbs
     env_file:
@@ -24,7 +24,7 @@ services:
     container_name: hadoop-datanode-0
     restart: always
     volumes:
-      - hadoop_datanode_0-50g:/hadoop/dfs/data
+      - hadoop_datanode_0-10g:/hadoop/dfs/data
     environment:
       SERVICE_PRECONDITION: "namenode:9870"
     env_file:
@@ -32,14 +32,14 @@ services:
     networks:
       default:
         aliases:
-          - hd-data
+          - hd-data-0
 
   datanode_1:
     image: hadoop-datanode
     container_name: hadoop-datanode-1
     restart: always
     volumes:
-      - hadoop_datanode_1-50g:/hadoop/dfs/data
+      - hadoop_datanode_1-10g:/hadoop/dfs/data
     environment:
       SERVICE_PRECONDITION: "namenode:9870"
     env_file:
@@ -47,7 +47,7 @@ services:
     networks:
       default:
         aliases:
-          - hd-data
+          - hd-data-1
 
   resourcemanager:
     image: hadoop-resourcemanager
@@ -82,7 +82,7 @@ services:
     environment:
       SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
     volumes:
-      - hadoop_historyserver-50g:/hadoop/yarn/timeline
+      - hadoop_historyserver-10g:/hadoop/yarn/timeline
     env_file:
       - ./hadoop.env
     networks:
@@ -91,10 +91,10 @@ services:
           - hd-history
 
 volumes:
-  hadoop_namenode-50g:
-  hadoop_datanode_0-50g:
-  hadoop_datanode_1-50g:
-  hadoop_historyserver-50g:
+  hadoop_namenode-10g:
+  hadoop_datanode_0-10g:
+  hadoop_datanode_1-10g:
+  hadoop_historyserver-10g:
 
 networks:
   default:
